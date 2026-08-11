@@ -1,10 +1,11 @@
 import { useState, useEffect, useCallback } from 'react';
+import { fetchSlides } from '../services/productService';
 import { useLanguage } from '../context/LanguageContext';
 import styles from './HeroCarousel.module.css';
 
-const SLIDE_DATA = [
+const FALLBACK_SLIDES = [
   {
-    id: 0,
+    id: 'slide-1',
     titleKey: 'hero.slide1Title',
     subtitleKey: 'hero.slide1Subtitle',
     ctaNav: 'Blouses',
@@ -12,7 +13,7 @@ const SLIDE_DATA = [
     alt: 'Editorial photograph of model in avant-garde blouse in minimalist studio',
   },
   {
-    id: 1,
+    id: 'slide-2',
     titleKey: 'hero.slide2Title',
     subtitleKey: 'hero.slide2Subtitle',
     ctaNav: 'Skirts',
@@ -25,8 +26,42 @@ const AUTO_ADVANCE_MS = 5000;
 
 export default function HeroCarousel({ onNavigate }) {
   const { t } = useLanguage();
+  const [slides, setSlides] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [current, setCurrent] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    async function loadSlides() {
+      try {
+        const data = await fetchSlides();
+        if (isMounted) {
+          if (data && data.length > 0) {
+            setSlides(data);
+          } else {
+            setSlides(FALLBACK_SLIDES);
+          }
+        }
+      } catch (err) {
+        console.warn('Error fetching slides from Supabase:', err);
+        if (isMounted) {
+          setSlides(FALLBACK_SLIDES);
+        }
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+      }
+    }
+
+    loadSlides();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const goToSlide = useCallback((index) => {
     if (index === current || isTransitioning) return;
@@ -38,94 +73,126 @@ export default function HeroCarousel({ onNavigate }) {
   }, [current, isTransitioning]);
 
   useEffect(() => {
+    if (loading || slides.length === 0) return;
     const timer = setInterval(() => {
-      const next = (current + 1) % SLIDE_DATA.length;
+      const next = (current + 1) % slides.length;
       goToSlide(next);
     }, AUTO_ADVANCE_MS);
     return () => clearInterval(timer);
-  }, [current, goToSlide]);
+  }, [current, goToSlide, loading, slides.length]);
 
   const handlePrev = () => {
-    const prev = (current - 1 + SLIDE_DATA.length) % SLIDE_DATA.length;
+    if (slides.length === 0) return;
+    const prev = (current - 1 + slides.length) % slides.length;
     goToSlide(prev);
   };
 
   const handleNext = () => {
-    const next = (current + 1) % SLIDE_DATA.length;
+    if (slides.length === 0) return;
+    const next = (current + 1) % slides.length;
     goToSlide(next);
   };
+
+  if (loading) {
+    return (
+      <section className={styles.skeletonHero} aria-label="Loading carousel">
+        <div className={styles.skeletonContent}>
+          <div className={styles.skeletonTitle} />
+          <div className={styles.skeletonSubtitle} />
+          <div className={styles.skeletonCta} />
+        </div>
+      </section>
+    );
+  }
+
+  if (!slides || slides.length === 0) {
+    return null;
+  }
 
   return (
     <section className={styles.hero} aria-label="Hero carousel">
       {/* Side Navigation Arrows */}
-      <button
-        id="hero-prev-btn"
-        className={`${styles.navArrow} ${styles.prevArrow}`}
-        onClick={handlePrev}
-        aria-label="Previous slide"
-      >
-        <span className="material-symbols-outlined">chevron_left</span>
-      </button>
-      <button
-        id="hero-next-btn"
-        className={`${styles.navArrow} ${styles.nextArrow}`}
-        onClick={handleNext}
-        aria-label="Next slide"
-      >
-        <span className="material-symbols-outlined">chevron_right</span>
-      </button>
+      {slides.length > 1 && (
+        <>
+          <button
+            id="hero-prev-btn"
+            className={`${styles.navArrow} ${styles.prevArrow}`}
+            onClick={handlePrev}
+            aria-label="Previous slide"
+          >
+            <span className="material-symbols-outlined">chevron_left</span>
+          </button>
+          <button
+            id="hero-next-btn"
+            className={`${styles.navArrow} ${styles.nextArrow}`}
+            onClick={handleNext}
+            aria-label="Next slide"
+          >
+            <span className="material-symbols-outlined">chevron_right</span>
+          </button>
+        </>
+      )}
 
       <div className={styles.slidesWrapper}>
-        {SLIDE_DATA.map((slide, idx) => (
-          <div
-            key={slide.id}
-            className={`${styles.slide} ${idx === current ? styles.slideActive : ''}`}
-            aria-hidden={idx !== current}
-          >
-            <img
-              src={slide.image}
-              alt={slide.alt}
-              className={styles.slideImage}
-            />
-            <div className={styles.slideOverlay} />
-            <div className={styles.slideContent}>
-              <h2 className={`text-display-xl ${styles.slideTitle}`}>{t(slide.titleKey)}</h2>
-              <p className={`text-body-lg ${styles.slideSubtitle}`}>{t(slide.subtitleKey)}</p>
-              <button
-                id={`hero-cta-${idx}`}
-                className={`text-label-sm ${styles.slideCta}`}
-                onClick={() => {
-                  if (onNavigate) {
-                    onNavigate(slide.ctaNav);
-                  } else {
-                    const gallery = document.getElementById('gallery-heading');
-                    if (gallery) {
-                      gallery.scrollIntoView({ behavior: 'smooth' });
+        {slides.map((slide, idx) => {
+          const slideTitle = slide.titleKey ? t(slide.titleKey) : slide.title;
+          const slideSubtitle = slide.subtitleKey ? t(slide.subtitleKey) : slide.subtitle;
+          const ctaText = slide.cta_text || t('hero.shopBtn');
+          const targetNav = slide.cta_nav || slide.ctaNav || 'Blouses';
+
+          return (
+            <div
+              key={slide.id || idx}
+              className={`${styles.slide} ${idx === current ? styles.slideActive : ''}`}
+              aria-hidden={idx !== current}
+            >
+              <img
+                src={slide.image}
+                alt={slide.alt || ''}
+                className={styles.slideImage}
+              />
+              <div className={styles.slideOverlay} />
+              <div className={styles.slideContent}>
+                <h2 className={`text-display-xl ${styles.slideTitle}`}>{slideTitle}</h2>
+                <p className={`text-body-lg ${styles.slideSubtitle}`}>{slideSubtitle}</p>
+                <button
+                  id={`hero-cta-${idx}`}
+                  className={`text-label-sm ${styles.slideCta}`}
+                  onClick={() => {
+                    if (onNavigate) {
+                      onNavigate(targetNav);
+                    } else {
+                      const gallery = document.getElementById('gallery-heading');
+                      if (gallery) {
+                        gallery.scrollIntoView({ behavior: 'smooth' });
+                      }
                     }
-                  }
-                }}
-              >
-                {t('hero.shopBtn')}
-              </button>
+                  }}
+                >
+                  {ctaText}
+                </button>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Slide indicators */}
-      <div className={styles.indicators} role="tablist" aria-label="Slide indicators">
-        {SLIDE_DATA.map((slide, idx) => (
-          <button
-            key={slide.id}
-            id={`carousel-indicator-${idx}`}
-            role="tab"
-            aria-selected={idx === current}
-            aria-label={`Go to slide ${idx + 1}`}
-            className={`${styles.indicator} ${idx === current ? styles.indicatorActive : ''}`}
-            onClick={() => goToSlide(idx)}
-          />
-        ))}
-      </div>
+      {slides.length > 1 && (
+        <div className={styles.indicators} role="tablist" aria-label="Slide indicators">
+          {slides.map((slide, idx) => (
+            <button
+              key={slide.id || idx}
+              id={`carousel-indicator-${idx}`}
+              role="tab"
+              aria-selected={idx === current}
+              aria-label={`Go to slide ${idx + 1}`}
+              className={`${styles.indicator} ${idx === current ? styles.indicatorActive : ''}`}
+              onClick={() => goToSlide(idx)}
+            />
+          ))}
+        </div>
+      )}
     </section>
   );
 }

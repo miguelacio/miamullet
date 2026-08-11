@@ -99,9 +99,8 @@ export default function Navbar({ activePage, onNavigate }) {
           <img src={miaRectangleLogo} alt="MIAMULLET" className={styles.brandLogo} />
         </button>
 
-        {/* Right: Language toggle & search icon */}
+        {/* Right: Search icon & Language toggle (desktop only) */}
         <div className={styles.trailingIcons}>
-          <LanguageToggle />
           <button
             id="search-btn"
             className={styles.iconBtn}
@@ -110,6 +109,9 @@ export default function Navbar({ activePage, onNavigate }) {
           >
             <span className="material-symbols-outlined">search</span>
           </button>
+          <div className={styles.desktopLanguageToggle}>
+            <LanguageToggle />
+          </div>
         </div>
       </div>
 
@@ -148,6 +150,10 @@ export default function Navbar({ activePage, onNavigate }) {
               {t(`nav.${item.key}`)}
             </button>
           ))}
+          <div className={styles.mobileLanguageWrapper}>
+            <span className={`text-label-sm ${styles.mobileLanguageLabel}`}>Language / Idioma</span>
+            <LanguageToggle />
+          </div>
         </nav>
       )}
     </header>
