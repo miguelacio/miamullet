@@ -36,8 +36,8 @@ export default function Navbar({ activePage, onNavigate }) {
     if (onNavigate) {
       onNavigate(link);
     } else {
-      navigate('/');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      const slug = link.toLowerCase();
+      navigate(`/category/${slug}`);
     }
   };
 

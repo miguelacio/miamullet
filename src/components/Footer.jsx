@@ -1,3 +1,4 @@
+import miaRectangleLogo from '../assets/mia_rectangle.png';
 import styles from './Footer.module.css';
 
 const FOOTER_LINKS = ['Brand Story', 'Sustainability', 'Journal', 'Contact', 'Terms'];
@@ -8,7 +9,7 @@ export default function Footer() {
       <div className={`container ${styles.grid}`}>
         {/* Brand */}
         <div className={styles.brand}>
-          <div className={`text-headline-md ${styles.brandName}`}>MIAMULLET</div>
+          <img src={miaRectangleLogo} alt="MIAMULLET" className={styles.brandLogo} />
           <p className={`text-body-md ${styles.copyright} ${styles.copyrightDesktop}`}>
             © 2024 MIAMULLET. ALL RIGHTS RESERVED.
           </p>

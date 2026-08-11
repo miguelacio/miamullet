@@ -72,3 +72,17 @@ export const PRODUCTS = [
 export function getProductById(id) {
   return PRODUCTS.find((p) => p.id === id);
 }
+
+export const CATEGORIES = [
+  { id: 'blouses', name: 'Blouses' },
+  { id: 'skirts', name: 'Skirts' },
+  { id: 'accessories', name: 'Accessories' },
+];
+
+export function getProductsByCategory(categoryName) {
+  return PRODUCTS.filter((p) => p.category === categoryName);
+}
+
+export function getCategoryBySlug(slug) {
+  return CATEGORIES.find((c) => c.id === slug);
+}

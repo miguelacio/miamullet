@@ -31,10 +31,12 @@
   }
 }
 
-.brandName {
-  color: var(--color-primary);
-  letter-spacing: -0.02em;
-  font-weight: 600;
+.brandLogo {
+  height: 40px;
+  width: auto;
+  max-width: 150px;
+  object-fit: contain;
+  display: block;
 }
 
 .copyright {

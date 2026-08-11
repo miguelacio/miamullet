@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import HomeScreen from './screens/HomeScreen';
+import CategoryScreen from './screens/CategoryScreen';
 import ProductDetailScreen from './screens/ProductDetailScreen';
 
 export default function App() {
@@ -14,6 +15,7 @@ export default function App() {
         {/* Main Route View */}
         <Routes>
           <Route path="/" element={<HomeScreen />} />
+          <Route path="/category/:categorySlug" element={<CategoryScreen />} />
           <Route path="/:productId" element={<ProductDetailScreen />} />
         </Routes>
 

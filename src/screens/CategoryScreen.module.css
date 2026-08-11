@@ -1,0 +1,119 @@
+/* ===== Category Screen ===== */
+.main {
+  padding-top: 120px;
+  padding-bottom: var(--spacing-section-gap);
+}
+
+/* Breadcrumb */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 40px;
+}
+
+.backBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-secondary);
+  background: none;
+  border: none;
+  padding: 0;
+  transition: color var(--transition-base);
+}
+.backBtn:hover {
+  color: var(--color-primary);
+}
+
+.breadcrumbDivider {
+  color: var(--color-outline-variant);
+}
+
+.breadcrumbCurrent {
+  color: var(--color-primary);
+}
+
+/* Hero Banner */
+.heroBanner {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  overflow: hidden;
+  margin-bottom: 64px;
+  background-color: var(--color-surface-container-low);
+}
+
+@media (min-width: 768px) {
+  .heroBanner {
+    height: 520px;
+  }
+}
+
+.heroImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.heroOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(253, 249, 240, 0.9) 0%, rgba(253, 249, 240, 0.2) 50%, transparent 100%);
+  display: flex;
+  align-items: flex-end;
+  padding: 48px;
+}
+
+.heroTitle {
+  color: var(--color-primary);
+}
+
+/* Product Grid */
+.gridSection {
+  margin-top: 0;
+}
+
+.gridHeading {
+  color: var(--color-primary);
+  margin-bottom: 32px;
+}
+
+.productGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+@media (min-width: 768px) {
+  .productGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .productGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Product card in grid — override GalleryCard heights for uniform look */
+.productGrid :global(.card),
+.productCard {
+  height: 360px;
+}
+
+@media (max-width: 767px) {
+  .productGrid :global(.card),
+  .productCard {
+    height: 280px;
+  }
+}
+
+/* Empty state */
+.emptyState {
+  text-align: center;
+  padding: 80px 24px;
+  color: var(--color-secondary);
+}
