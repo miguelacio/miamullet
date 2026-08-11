@@ -1,29 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getProductById, PRODUCTS } from '../data/products';
+import { useLanguage } from '../context/LanguageContext';
 import styles from './ProductDetailScreen.module.css';
-
-const ACCORDIONS = [
-  {
-    id: 'care',
-    title: 'Composition & Care',
-    content: '100% Italian Double Georgette Silk. Dry clean only. Cool iron on reverse if needed. Do not tumble dry.',
-  },
-  {
-    id: 'sizing',
-    title: 'Sizing & Fit',
-    content: 'Designed for a relaxed, fluid silhouette. Fits true to size. Model is 5\'10" (178cm) wearing size Small.',
-  },
-  {
-    id: 'shipping',
-    title: 'Shipping & Delivery',
-    content: 'Complimentary express worldwide shipping on all orders over $300. Orders delivered in Signature Maison Box.',
-  },
-];
 
 export default function ProductDetailScreen({ product: propProduct, onBack }) {
   const { productId } = useParams();
   const navigate = useNavigate();
+  const { language } = useLanguage();
   const [selectedImage, setSelectedImage] = useState(0);
   const [openAccordion, setOpenAccordion] = useState(null);
   const [inquireModal, setInquireModal] = useState(false);
@@ -36,9 +20,33 @@ export default function ProductDetailScreen({ product: propProduct, onBack }) {
   }, [productId]);
 
   const images = product?.gallery || [];
-  const title = product?.title || 'Product Detail';
+  const title = typeof product?.title === 'object' ? product.title[language] || product.title.es : product?.title || '';
   const price = product?.price || '';
-  const description = product?.description || '';
+  const description = typeof product?.description === 'object' ? product.description[language] || product.description.es : product?.description || '';
+
+  const accordions = [
+    {
+      id: 'care',
+      title: language === 'es' ? 'Composición y Cuidados' : 'Composition & Care',
+      content: typeof product?.composition === 'object'
+        ? (product.composition[language] || product.composition.es)
+        : (language === 'es' ? '100% Seda de peso pesado. Lavado en seco únicamente.' : '100% Heavyweight Silk. Dry clean only.'),
+    },
+    {
+      id: 'sizing',
+      title: language === 'es' ? 'Talla y Ajuste' : 'Sizing & Fit',
+      content: language === 'es'
+        ? 'Diseñado para una silueta holgada y fluida. Se ajusta a la talla real. La modelo mide 1.78m y usa talla S.'
+        : 'Designed for a relaxed, fluid silhouette. Fits true to size. Model is 5\'10" (178cm) wearing size Small.',
+    },
+    {
+      id: 'shipping',
+      title: language === 'es' ? 'Envío y Entrega' : 'Shipping & Delivery',
+      content: language === 'es'
+        ? 'Envío exprés gratuito a todo el mundo en pedidos superiores a $300. Entregado en nuestra caja signature de la Casa.'
+        : 'Complimentary express worldwide shipping on all orders over $300. Orders delivered in Signature Maison Box.',
+    },
+  ];
 
   const handleBack = () => {
     if (onBack) {
@@ -58,7 +66,7 @@ export default function ProductDetailScreen({ product: propProduct, onBack }) {
       <nav className={styles.breadcrumb} aria-label="Breadcrumb">
         <button id="back-to-gallery-btn" onClick={handleBack} className={`text-label-sm ${styles.backBtn}`}>
           <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>arrow_back</span>
-          Back to Gallery
+          {language === 'es' ? 'Volver a la Galería' : 'Back to Gallery'}
         </button>
         <span className={styles.breadcrumbDivider}>/</span>
         <span className={`text-label-sm ${styles.breadcrumbCurrent}`}>{title}</span>
@@ -71,7 +79,7 @@ export default function ProductDetailScreen({ product: propProduct, onBack }) {
           <div className={styles.mainImageWrapper}>
             <img
               src={images[selectedImage]?.url || ''}
-              alt={images[selectedImage]?.alt || ''}
+              alt={typeof images[selectedImage]?.alt === 'object' ? images[selectedImage].alt[language] : images[selectedImage]?.alt || ''}
               className={styles.mainImage}
             />
           </div>
@@ -86,7 +94,11 @@ export default function ProductDetailScreen({ product: propProduct, onBack }) {
                 onClick={() => setSelectedImage(index)}
                 aria-label={`View detail image ${index + 1}`}
               >
-                <img src={img.url} alt={img.alt} className={styles.thumbImage} />
+                <img
+                  src={img.url}
+                  alt={typeof img.alt === 'object' ? img.alt[language] : img.alt || ''}
+                  className={styles.thumbImage}
+                />
               </button>
             ))}
           </div>
@@ -105,13 +117,13 @@ export default function ProductDetailScreen({ product: propProduct, onBack }) {
               className={`text-label-sm ${styles.primaryBtn}`}
               onClick={() => setInquireModal(true)}
             >
-              Where to Buy
+              {language === 'es' ? 'Dónde Comprar' : 'Where to Buy'}
             </button>
           </div>
 
           {/* Accordion list */}
           <div className={styles.accordionSection}>
-            {ACCORDIONS.map((acc) => {
+            {accordions.map((acc) => {
               const isOpen = openAccordion === acc.id;
               return (
                 <div key={acc.id} className={styles.accordionItem}>
@@ -143,13 +155,17 @@ export default function ProductDetailScreen({ product: propProduct, onBack }) {
         <div className={styles.modalOverlay} onClick={() => setInquireModal(false)}>
           <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
             <div className={styles.modalHeader}>
-              <h3 className="text-headline-md">Boutique Availability</h3>
+              <h3 className="text-headline-md">
+                {language === 'es' ? 'Disponibilidad en Boutique' : 'Boutique Availability'}
+              </h3>
               <button className={styles.closeBtn} onClick={() => setInquireModal(false)}>
                 <span className="material-symbols-outlined">close</span>
               </button>
             </div>
             <p className="text-body-md" style={{ color: 'var(--color-secondary)', marginBottom: '24px' }}>
-              The {title} is available at select MAISON flagship stores worldwide.
+              {language === 'es'
+                ? `${title} está disponible en boutiques insignia de la Maison en todo el mundo.`
+                : `The ${title} is available at select MAISON flagship stores worldwide.`}
             </p>
             <ul className={styles.storeList}>
               <li className={styles.storeItem}>
@@ -167,7 +183,7 @@ export default function ProductDetailScreen({ product: propProduct, onBack }) {
               style={{ marginTop: '24px' }}
               onClick={() => setInquireModal(false)}
             >
-              Close
+              {language === 'es' ? 'Cerrar' : 'Close'}
             </button>
           </div>
         </div>

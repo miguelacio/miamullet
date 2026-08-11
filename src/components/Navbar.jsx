@@ -1,12 +1,20 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useLanguage } from '../context/LanguageContext';
+import LanguageToggle from './LanguageToggle';
 import miaRectangleLogo from '../assets/mia_rectangle.png';
 import styles from './Navbar.module.css';
 
-const NAV_LINKS = ['Blouses', 'Skirts', 'Accessories'];
+const NAV_ITEMS = [
+  { key: 'blouses', slug: 'blouses' },
+  { key: 'skirts', slug: 'skirts' },
+  { key: 'accessories', slug: 'accessories' },
+  { key: 'blog', slug: 'blog', isBlog: true },
+];
 
 export default function Navbar({ activePage, onNavigate }) {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -23,7 +31,6 @@ export default function Navbar({ activePage, onNavigate }) {
     if (searchOpen && searchRef.current) searchRef.current.focus();
   }, [searchOpen]);
 
-  // Close mobile menu on resize
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 768) setMobileOpen(false);
@@ -32,12 +39,15 @@ export default function Navbar({ activePage, onNavigate }) {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const handleNavClick = (link) => {
+  const handleNavClick = (item) => {
     if (onNavigate) {
-      onNavigate(link);
+      onNavigate(item.slug);
     } else {
-      const slug = link.toLowerCase();
-      navigate(`/category/${slug}`);
+      if (item.isBlog) {
+        navigate('/blog');
+      } else {
+        navigate(`/category/${item.slug}`);
+      }
     }
   };
 
@@ -56,14 +66,14 @@ export default function Navbar({ activePage, onNavigate }) {
       <div className={`container ${styles.navInner}`}>
         {/* Left: Desktop nav links */}
         <nav className={styles.desktopLinks} aria-label="Primary navigation">
-          {NAV_LINKS.map((link) => (
+          {NAV_ITEMS.map((item) => (
             <button
-              key={link}
-              id={`nav-${link.toLowerCase()}`}
-              className={`text-label-sm ${styles.navLink} ${activePage === link ? styles.navLinkActive : ''}`}
-              onClick={() => handleNavClick(link)}
+              key={item.key}
+              id={`nav-${item.key}`}
+              className={`text-label-sm ${styles.navLink} ${activePage === item.slug ? styles.navLinkActive : ''}`}
+              onClick={() => handleNavClick(item)}
             >
-              {link}
+              {t(`nav.${item.key}`)}
             </button>
           ))}
         </nav>
@@ -89,8 +99,9 @@ export default function Navbar({ activePage, onNavigate }) {
           <img src={miaRectangleLogo} alt="MIAMULLET" className={styles.brandLogo} />
         </button>
 
-        {/* Right: Search icon */}
+        {/* Right: Language toggle & search icon */}
         <div className={styles.trailingIcons}>
+          <LanguageToggle />
           <button
             id="search-btn"
             className={styles.iconBtn}
@@ -111,13 +122,13 @@ export default function Navbar({ activePage, onNavigate }) {
             id="search-input"
             type="text"
             className={`text-body-md ${styles.searchInput}`}
-            placeholder="Search pieces..."
+            placeholder={t('nav.searchPlaceholder')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             onKeyDown={(e) => e.key === 'Escape' && setSearchOpen(false)}
           />
           {searchQuery && (
-            <button className={styles.iconBtn} onClick={() => setSearchQuery('')} aria-label="Clear search">
+            <button className={styles.iconBtn} onClick={() => setSearchQuery('')} aria-label={t('nav.clearSearch')}>
               <span className="material-symbols-outlined">close</span>
             </button>
           )}
@@ -127,14 +138,14 @@ export default function Navbar({ activePage, onNavigate }) {
       {/* Mobile drawer */}
       {mobileOpen && (
         <nav className={styles.mobileMenu} aria-label="Mobile navigation">
-          {NAV_LINKS.map((link) => (
+          {NAV_ITEMS.map((item) => (
             <button
-              key={link}
-              id={`mobile-nav-${link.toLowerCase()}`}
-              className={`text-label-sm ${styles.mobileLink} ${activePage === link ? styles.mobileLinkActive : ''}`}
-              onClick={() => { handleNavClick(link); setMobileOpen(false); }}
+              key={item.key}
+              id={`mobile-nav-${item.key}`}
+              className={`text-label-sm ${styles.mobileLink} ${activePage === item.slug ? styles.mobileLinkActive : ''}`}
+              onClick={() => { handleNavClick(item); setMobileOpen(false); }}
             >
-              {link}
+              {t(`nav.${item.key}`)}
             </button>
           ))}
         </nav>

@@ -1,17 +1,20 @@
 import { PRODUCTS } from '../data/products';
+import { useLanguage } from '../context/LanguageContext';
 import GalleryCard from './GalleryCard';
 import styles from './GallerySection.module.css';
 
 export default function GallerySection({ onSelectProduct }) {
+  const { t } = useLanguage();
+
   return (
     <section className={styles.section} aria-labelledby="gallery-heading">
       <div className="container">
         <header className={styles.sectionHeader}>
           <h3 id="gallery-heading" className={`text-headline-lg ${styles.heading}`}>
-            Curated Selections
+            {t('gallery.heading')}
           </h3>
           <p className={`text-body-md ${styles.subheading}`}>
-            Discover pieces that define understated elegance, crafted for the discerning eye.
+            {t('gallery.subheading')}
           </p>
         </header>
 

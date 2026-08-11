@@ -1,10 +1,16 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useLanguage } from '../context/LanguageContext';
 import styles from './GalleryCard.module.css';
 
 export default function GalleryCard({ item, onSelect }) {
   const navigate = useNavigate();
+  const { language } = useLanguage();
   const [hovered, setHovered] = useState(false);
+
+  const title = typeof item.title === 'object' ? item.title[language] || item.title.es : item.title;
+  const category = typeof item.category === 'object' ? item.category[language] || item.category.es : item.category;
+  const alt = typeof item.alt === 'object' ? item.alt[language] || item.alt.es : item.alt;
 
   const handleClick = () => {
     if (onSelect) {
@@ -21,20 +27,20 @@ export default function GalleryCard({ item, onSelect }) {
       onClick={handleClick}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      aria-label={`${item.title} – ${item.category}`}
+      aria-label={`${title} – ${category}`}
       role="button"
       tabIndex={0}
       onKeyDown={(e) => e.key === 'Enter' && handleClick()}
     >
       <img
         src={item.image}
-        alt={item.alt}
+        alt={alt}
         className={`${styles.cardImage} ${hovered ? styles.cardImageHovered : ''}`}
       />
       <div className={styles.cardOverlay}>
-        <span className={`text-label-sm ${styles.cardCategory}`}>{item.category}</span>
+        <span className={`text-label-sm ${styles.cardCategory}`}>{category}</span>
         <h4 className={`${item.size === 'featured' ? 'text-headline-md' : 'text-body-lg'} ${styles.cardTitle}`}>
-          {item.title}
+          {title}
         </h4>
       </div>
     </article>

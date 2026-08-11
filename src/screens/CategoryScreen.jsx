@@ -1,20 +1,21 @@
 import { useEffect, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getCategoryBySlug, getProductsByCategory } from '../data/products';
+import { useLanguage } from '../context/LanguageContext';
 import GalleryCard from '../components/GalleryCard';
 import styles from './CategoryScreen.module.css';
 
 export default function CategoryScreen() {
   const { categorySlug } = useParams();
   const navigate = useNavigate();
+  const { language, t } = useLanguage();
 
   const category = getCategoryBySlug(categorySlug);
   const products = useMemo(
-    () => (category ? getProductsByCategory(category.name) : []),
+    () => (category ? getProductsByCategory(category.id) : []),
     [category]
   );
 
-  // Pick a random product for the hero image (stable per mount)
   const heroProduct = useMemo(() => {
     if (products.length === 0) return null;
     const randomIndex = Math.floor(Math.random() * products.length);
@@ -25,19 +26,19 @@ export default function CategoryScreen() {
     window.scrollTo({ top: 0, behavior: 'instant' });
   }, [categorySlug]);
 
-  // If category slug is invalid, redirect home
   if (!category) {
     return (
       <main className={`container ${styles.main}`}>
         <div className={styles.emptyState}>
-          <h2 className="text-headline-lg">Category not found</h2>
-          <p className="text-body-md" style={{ marginTop: '16px' }}>
-            The category you're looking for doesn't exist.
-          </p>
+          <h2 className="text-headline-lg">
+            {language === 'es' ? 'Categoría no encontrada' : 'Category not found'}
+          </h2>
         </div>
       </main>
     );
   }
+
+  const categoryName = typeof category.name === 'object' ? category.name[language] || category.name.es : category.name;
 
   return (
     <main className={`container ${styles.main}`}>
@@ -49,10 +50,10 @@ export default function CategoryScreen() {
           className={`text-label-sm ${styles.backBtn}`}
         >
           <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>arrow_back</span>
-          Home
+          {language === 'es' ? 'Inicio' : 'Home'}
         </button>
         <span className={styles.breadcrumbDivider}>/</span>
-        <span className={`text-label-sm ${styles.breadcrumbCurrent}`}>{category.name}</span>
+        <span className={`text-label-sm ${styles.breadcrumbCurrent}`}>{categoryName}</span>
       </nav>
 
       {/* Hero Banner */}
@@ -60,11 +61,11 @@ export default function CategoryScreen() {
         <div className={styles.heroBanner}>
           <img
             src={heroProduct.image}
-            alt={heroProduct.alt}
+            alt={typeof heroProduct.alt === 'object' ? heroProduct.alt[language] || heroProduct.alt.es : heroProduct.alt}
             className={styles.heroImage}
           />
           <div className={styles.heroOverlay}>
-            <h1 className={`text-display-xl ${styles.heroTitle}`}>{category.name}</h1>
+            <h1 className={`text-display-xl ${styles.heroTitle}`}>{categoryName}</h1>
           </div>
         </div>
       )}
@@ -72,7 +73,7 @@ export default function CategoryScreen() {
       {/* Product Grid */}
       <section className={styles.gridSection}>
         <h2 className={`text-headline-md ${styles.gridHeading}`}>
-          All {category.name} ({products.length})
+          {categoryName} ({products.length})
         </h2>
 
         {products.length > 0 ? (
@@ -85,7 +86,9 @@ export default function CategoryScreen() {
           </div>
         ) : (
           <div className={styles.emptyState}>
-            <p className="text-body-lg">No products in this category yet.</p>
+            <p className="text-body-lg">
+              {language === 'es' ? 'No hay productos en esta categoría.' : 'No products in this category yet.'}
+            </p>
           </div>
         )}
       </section>
