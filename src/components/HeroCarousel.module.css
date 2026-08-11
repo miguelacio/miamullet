@@ -214,17 +214,25 @@
 }
 
 @media (max-width: 768px) {
+  .slideContent {
+    padding-inline: 54px;
+  }
+  .slideSubtitle {
+    max-width: 280px;
+    font-size: 15px;
+    line-height: 1.45;
+  }
   .prevArrow {
-    left: 12px;
+    left: 8px;
   }
   .nextArrow {
-    right: 12px;
+    right: 8px;
   }
   .navArrow {
-    width: 42px;
-    height: 42px;
+    width: 40px;
+    height: 40px;
   }
   .navArrow span {
-    font-size: 22px;
+    font-size: 20px;
   }
 }
