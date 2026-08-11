@@ -1,0 +1,118 @@
+/* ===== Gallery Section ===== */
+.section {
+  padding-block: var(--spacing-section-gap);
+}
+
+.sectionHeader {
+  margin-bottom: 64px;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .sectionHeader { text-align: left; }
+}
+
+.heading {
+  color: var(--color-primary);
+  margin-bottom: 16px;
+}
+
+.subheading {
+  color: var(--color-secondary);
+  max-width: 480px;
+}
+
+/* Grid layout */
+.grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-gutter);
+}
+
+@media (min-width: 768px) {
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+  }
+}
+
+.gridFeatured {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .gridFeatured { grid-column: 1 / span 8; }
+}
+
+.gridStack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-gutter);
+}
+
+@media (min-width: 768px) {
+  .gridStack { grid-column: 9 / -1; }
+}
+
+/* Cards */
+.card {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--color-surface-container-low);
+  cursor: pointer;
+  outline: none;
+}
+
+.card:focus-visible {
+  box-shadow: 0 0 0 2px var(--color-primary);
+}
+
+.cardFeatured {
+  height: 500px;
+}
+
+.cardSmall {
+  height: 240px;
+}
+
+@media (max-width: 767px) {
+  .cardFeatured { height: 280px; }
+  .cardSmall    { height: 200px; }
+}
+
+.cardImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transform: scale(1);
+  transition: transform var(--transition-slow);
+  will-change: transform;
+}
+
+.cardImageHovered {
+  transform: scale(1.05);
+}
+
+.cardOverlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 32px;
+  background: linear-gradient(to top, rgba(253,249,240,0.85) 0%, transparent 100%);
+}
+
+.cardSmall .cardOverlay {
+  padding: 24px;
+}
+
+.cardCategory {
+  color: var(--color-primary);
+  display: block;
+  margin-bottom: 8px;
+}
+
+.cardTitle {
+  color: var(--color-primary);
+}

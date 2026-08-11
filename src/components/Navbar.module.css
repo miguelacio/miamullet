@@ -1,0 +1,224 @@
+/* ===== Navbar ===== */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background-color: #ffffff;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transition: box-shadow var(--transition-base);
+}
+
+.navScrolled {
+  box-shadow: 0 1px 0 rgba(196, 199, 199, 0.4);
+}
+
+.navInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 80px;
+  position: relative;
+}
+
+/* Desktop nav links — left side */
+.desktopLinks {
+  display: none;
+  gap: 32px;
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  .desktopLinks {
+    display: flex;
+  }
+}
+
+.navLink {
+  position: relative;
+  color: var(--color-secondary);
+  transition: color var(--transition-base);
+  background: none;
+  border: none;
+  padding: 0;
+  padding-bottom: 4px;
+}
+
+.navLink::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background-color: var(--color-primary);
+  transition: width var(--transition-base);
+}
+
+.navLink:hover {
+  color: var(--color-primary);
+}
+
+.navLink:hover::after {
+  width: 100%;
+}
+
+.navLinkActive {
+  color: var(--color-primary);
+}
+
+.navLinkActive::after {
+  width: 100%;
+}
+
+/* Mobile hamburger */
+.mobileMenuBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-primary);
+  background: none;
+  border: none;
+  width: 40px;
+  height: 40px;
+  transition: opacity var(--transition-base);
+}
+
+.mobileMenuBtn:hover {
+  opacity: 0.7;
+}
+
+@media (min-width: 768px) {
+  .mobileMenuBtn {
+    display: none;
+  }
+}
+
+/* Brand center */
+.brand {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: opacity var(--transition-base);
+}
+
+.brand:hover {
+  opacity: 0.75;
+}
+
+.brandLogo {
+  width: auto;
+  max-width: 150px;
+  object-fit: contain;
+  display: block;
+}
+
+/* Trailing icons */
+.trailingIcons {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.iconBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-secondary);
+  background: none;
+  border: none;
+  width: 40px;
+  height: 40px;
+  transition: color var(--transition-base);
+}
+
+.iconBtn:hover {
+  color: var(--color-primary);
+}
+
+/* Search bar */
+.searchBar {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 300ms ease, border-color 300ms ease;
+  border-bottom: 1px solid transparent;
+}
+
+.searchBarOpen {
+  max-height: 72px;
+  border-bottom-color: var(--color-outline-variant);
+}
+
+.searchBarInner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-block: 16px;
+}
+
+.searchInput {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: var(--color-on-surface);
+  outline: none;
+}
+
+.searchInput::placeholder {
+  color: var(--color-outline);
+}
+
+/* Mobile menu drawer */
+.mobileMenu {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 0 16px;
+  border-top: 1px solid var(--color-outline-variant);
+  animation: slideDown 200ms ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.mobileLink {
+  display: block;
+  text-align: left;
+  padding: 14px var(--spacing-margin-mobile);
+  color: var(--color-secondary);
+  transition: color var(--transition-base), background-color var(--transition-base);
+  background: none;
+  border: none;
+}
+
+.mobileLink:hover {
+  color: var(--color-primary);
+  background-color: var(--color-surface-container-low);
+}
+
+.mobileLinkActive {
+  color: var(--color-primary);
+}
+
+@media (min-width: 768px) {
+  .mobileMenu {
+    display: none;
+  }
+}
