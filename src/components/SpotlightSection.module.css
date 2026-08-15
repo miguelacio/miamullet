@@ -1,0 +1,166 @@
+.section {
+  position: relative;
+  padding: 120px 0;
+  background-color: var(--color-surface-container-low);
+  overflow: hidden;
+}
+
+.bgWatermark {
+  bottom: -5%;
+  right: -5vw;
+}
+
+.spotlightGrid {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+@media (min-width: 992px) {
+  .spotlightGrid {
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+  }
+}
+
+/* Image Wrapper with Hotspot Pins */
+.imageContainer {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  aspect-ratio: 3 / 4;
+  margin-inline: auto;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.08);
+}
+
+.spotlightImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Hotspot Markers */
+.hotspotPin {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(253, 249, 240, 0.9);
+  border: 1px solid var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 5;
+  transition: transform var(--transition-base), background-color var(--transition-base);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.hotspotPinActive {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  transform: scale(1.15);
+}
+
+.hotspotPulse {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 1px solid var(--color-primary);
+  opacity: 0.5;
+  animation: pulseSlow 3s infinite;
+}
+
+/* Info Panel */
+.infoCard {
+  position: relative;
+  z-index: 3;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--color-secondary);
+  margin-bottom: 16px;
+}
+
+.title {
+  font-family: var(--font-headline);
+  font-size: clamp(32px, 3.5vw, 48px);
+  font-weight: 300;
+  line-height: 1.15;
+  color: var(--color-on-background);
+  margin-bottom: 20px;
+}
+
+.description {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--color-on-surface-variant);
+  margin-bottom: 36px;
+}
+
+/* Feature List Cards */
+.featureList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 40px;
+}
+
+.featureItem {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  border-radius: 4px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-outline-variant);
+  transition: all var(--transition-base);
+}
+
+.featureItemActive {
+  border-color: var(--color-primary);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+}
+
+.featureIcon {
+  font-size: 20px;
+  color: var(--color-primary);
+}
+
+.featureText {
+  font-size: 14px;
+  letter-spacing: 0.02em;
+  color: var(--color-on-surface);
+  font-weight: 500;
+}
+
+.ctaLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 32px;
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-weight: 500;
+  border: 1px solid var(--color-primary);
+  transition: all var(--transition-base);
+}
+
+.ctaLink:hover {
+  background: transparent;
+  color: var(--color-primary);
+}

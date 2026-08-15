@@ -189,3 +189,65 @@ button, a {
 ::-webkit-scrollbar-track { background: var(--color-surface-container-low); }
 ::-webkit-scrollbar-thumb { background: var(--color-outline-variant); }
 ::-webkit-scrollbar-thumb:hover { background: var(--color-outline); }
+
+/* ---------- 7. Anti-Grid Layout & Editorial Utilities ---------- */
+.anti-grid-container {
+  position: relative;
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--spacing-margin-mobile);
+}
+
+@media (min-width: 768px) {
+  .anti-grid-container {
+    padding-inline: var(--spacing-margin-desktop);
+  }
+}
+
+.vertical-text {
+  writing-mode: vertical-rl;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+
+.kinetic-bg-text {
+  position: absolute;
+  font-family: var(--font-headline);
+  font-size: clamp(80px, 14vw, 240px);
+  font-weight: 300;
+  line-height: 0.8;
+  color: rgba(28, 28, 22, 0.035);
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+  z-index: 0;
+  letter-spacing: -0.04em;
+}
+
+.glass-panel {
+  background: rgba(253, 249, 240, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.04);
+}
+
+.dark-glass-panel {
+  background: rgba(26, 26, 26, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  color: var(--color-surface);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.15);
+}
+
+@keyframes pulseSlow {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.85; transform: scale(1.05); }
+}
+
+.animate-pulse-slow {
+  animation: pulseSlow 4s ease-in-out infinite;
+}
+

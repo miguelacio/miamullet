@@ -1,0 +1,214 @@
+.heroSection {
+  position: relative;
+  min-height: 88vh;
+  padding-top: 120px;
+  padding-bottom: 80px;
+  background-color: var(--color-background);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.bgWatermark {
+  top: 10%;
+  left: -2vw;
+}
+
+.canvasGrid {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+  align-items: center;
+}
+
+@media (min-width: 992px) {
+  .canvasGrid {
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 60px;
+  }
+}
+
+/* Primary Visual Frame (Asymmetric Offset Left) */
+.primaryFrameWrapper {
+  position: relative;
+}
+
+.primaryFrame {
+  position: relative;
+  width: 100%;
+  max-width: 580px;
+  aspect-ratio: 3 / 4;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.08);
+  transition: transform var(--transition-slow);
+}
+
+.primaryImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 1.2s ease-out;
+}
+
+.primaryFrame:hover .primaryImage {
+  transform: scale(1.04);
+}
+
+/* Secondary Floating Card (Offset Right & Top) */
+.secondaryFrame {
+  position: absolute;
+  top: -40px;
+  right: -20px;
+  width: 220px;
+  aspect-ratio: 3 / 4;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.12);
+  z-index: 4;
+  border: 3px solid var(--color-surface);
+  transition: transform 0.5s ease;
+}
+
+@media (max-width: 768px) {
+  .secondaryFrame {
+    width: 140px;
+    top: -20px;
+    right: -10px;
+  }
+}
+
+.secondaryImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Floating Vertical Text Badge */
+.verticalBadge {
+  position: absolute;
+  left: -48px;
+  bottom: 60px;
+  z-index: 5;
+  font-size: 11px;
+  color: var(--color-secondary);
+}
+
+@media (max-width: 991px) {
+  .verticalBadge {
+    display: none;
+  }
+}
+
+/* Content Panel (Overlapping Asymmetrical Glass Box) */
+.contentCard {
+  position: relative;
+  z-index: 6;
+  padding: 48px 40px;
+  border-radius: 4px;
+  margin-top: 0;
+}
+
+@media (min-width: 992px) {
+  .contentCard {
+    margin-left: -80px;
+  }
+}
+
+.editorialTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-secondary);
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.title {
+  font-family: var(--font-headline);
+  font-size: clamp(36px, 4.5vw, 56px);
+  line-height: 1.15;
+  color: var(--color-on-background);
+  margin-bottom: 20px;
+  font-weight: 300;
+  letter-spacing: -0.01em;
+}
+
+.subtitle {
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--color-on-surface-variant);
+  margin-bottom: 36px;
+  max-width: 440px;
+}
+
+.actionRow {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.ctaBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 36px;
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  font-family: var(--font-body);
+  font-size: 13px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-weight: 500;
+  border: 1px solid var(--color-primary);
+  transition: all var(--transition-base);
+}
+
+.ctaBtn:hover {
+  background-color: transparent;
+  color: var(--color-primary);
+}
+
+.ctaArrow {
+  transition: transform var(--transition-base);
+}
+
+.ctaBtn:hover .ctaArrow {
+  transform: translateX(6px);
+}
+
+/* Look Selector Pills */
+.lookSelector {
+  display: flex;
+  gap: 12px;
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.lookPill {
+  padding: 8px 16px;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-secondary);
+  border: 1px solid transparent;
+  background: transparent;
+  transition: all var(--transition-base);
+}
+
+.lookPillActive {
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+  font-weight: 600;
+}
+
+.lookPill:hover:not(.lookPillActive) {
+  color: var(--color-primary);
+}
