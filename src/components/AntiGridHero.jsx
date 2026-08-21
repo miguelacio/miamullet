@@ -3,21 +3,6 @@ import { fetchSlides } from '../services/productService';
 import trimmedVideo from '../assets/trimmed 1.mp4';
 import styles from './AntiGridHero.module.css';
 
-const HERO_LOOKS = [
-  {
-    id: 'look-1',
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBf8DpRdglknXmK29iaCfUSTeYfveK_6XFBLD4XFMWFP-jDRpW8-86FT-LouuymXKQ8wrZjagBxLKF4TEhukkqXXeYjUNVqdgu70JURc5xnScn0QTTkXBnMazMMrzWfumaS8PCvT270jgUG1B3Tif2AbiYY2IA74MkCJGmh-2uxp-WK4_EHZMrNcf-tsHJ1nfEcFJYmyro19m5aueWdIIGgXbRXClIt58FGbj2oj4OUxIoCa6E69N9l',
-  },
-  {
-    id: 'look-2',
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBRw8pIaIoGpGJs_10KiPR0yYjv6jSgeszGwjCCiCsg584t2R7K8nHz96qv6P3yaHizQrqJ-WoNbyCf7TKVyFnsKpPAA-Rzx_BJPf-QdOR3Po9De8WWm1CD2KPzApM087Yw2MPokhZ8lqtyeqlu-i2HxV6x3XKDGNDyCu1NL0UvzSLy1a47_1qzhzZ62-KnOWmIty3RHjceF0gHQUNY5KLMy5MJmruxTTCT6Zq-4jy05T1lCENucFoB',
-  },
-  {
-    id: 'look-3',
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCfaMdc4GrXPMZ-jNxHX-2XNS60ig6BLfYhdrm2T67z7ftRURxjF-K_ovIVdGZe3tmO5tEJhRXI71_nDCVs1uHh8pLautKqfgs4SQk2njbICMCQ6SBtV3jnifqIV9qqVZTSF_atEffOqNGrrfwmdkmdk_Kw4iJrKXkLmBvFcbEipOeLm6oXEUPrkgKZDcDCSyYYyVh1VREryLRNh2rpw-V-tzgkmgil1Ifp0i6HCPrvpkh2Dd-hYQh1',
-  },
-];
-
 export default function AntiGridHero() {
   const [slides, setSlides] = useState([]);
   const [visibleCount, setVisibleCount] = useState(0);
@@ -29,13 +14,11 @@ export default function AntiGridHero() {
     async function loadHeroData() {
       try {
         const data = await fetchSlides();
-        const slideList = (data && data.length > 0) ? data : HERO_LOOKS;
-
-        if (isMounted) {
-          setSlides(slideList);
-
+        if (isMounted && Array.isArray(data) && data.length > 0) {
+          setSlides(data);
+          
           // Reveal cards sequentially every 1 second
-          slideList.slice(0, 4).forEach((_, idx) => {
+          data.slice(0, 4).forEach((_, idx) => {
             const tId = setTimeout(() => {
               if (isMounted) {
                 setVisibleCount((prev) => Math.max(prev, idx + 1));
@@ -45,18 +28,7 @@ export default function AntiGridHero() {
           });
         }
       } catch (err) {
-        console.warn('Error fetching slides:', err);
-        if (isMounted) {
-          setSlides(HERO_LOOKS);
-          HERO_LOOKS.slice(0, 4).forEach((_, idx) => {
-            const tId = setTimeout(() => {
-              if (isMounted) {
-                setVisibleCount((prev) => Math.max(prev, idx + 1));
-              }
-            }, (idx + 1) * 1000);
-            timers.push(tId);
-          });
-        }
+        console.warn('Error fetching hero slides:', err);
       }
     }
 

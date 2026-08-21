@@ -34,10 +34,10 @@ export const TRANSLATIONS = {
       exploreBtn: 'Descubrir La Minnus',
     },
     marquee: {
-      item1: 'HAUTE COUTURE 2026',
-      item2: 'ORGANIC ITALIAN SILK',
-      item3: 'ELEGANCIA DESCONSTRUIDA',
-      item4: 'MIAMULLET EDITORIAL',
+      item1: 'CULICHI COUTURE 2026',
+      item2: 'SINALOA PURA CALIDAD',
+      item3: 'ARCHIVE MIAMULLET',
+      item4: 'SHOP',
     },
     blogSection: {
       categoryLabel: 'EDITORIAL Y DIARIO',
