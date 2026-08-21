@@ -1,12 +1,22 @@
 .heroSection {
   position: relative;
   min-height: 88vh;
-  padding-top: 120px;
-  padding-bottom: 80px;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  max-width: 100%;
   background-color: var(--color-background);
   overflow: hidden;
   display: flex;
   align-items: center;
+}
+
+.fullWidthContainer {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  padding: 0;
+  margin: 0;
 }
 
 .bgWatermark {
@@ -19,6 +29,10 @@
   z-index: 2;
   display: grid;
   grid-template-columns: 1fr;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
   gap: 40px;
   align-items: center;
 }
@@ -26,61 +40,131 @@
 @media (min-width: 992px) {
   .canvasGrid {
     grid-template-columns: 1.1fr 0.9fr;
-    gap: 60px;
+    gap: 40px;
   }
 }
 
-/* Primary Visual Frame (Asymmetric Offset Left) */
+/* Primary Visual Frame (Full Edge-to-Edge Width) */
 .primaryFrameWrapper {
   position: relative;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 .primaryFrame {
   position: relative;
   width: 100%;
-  max-width: 580px;
+  max-width: 100%;
   aspect-ratio: 3 / 4;
-  border-radius: 4px;
+  border-radius: 0;
   overflow: hidden;
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.08);
+  box-shadow: none;
   transition: transform var(--transition-slow);
 }
 
-.primaryImage {
+.primaryImage,
+.primaryVideo {
   width: 100%;
   height: 100%;
   object-fit: cover;
   transition: transform 1.2s ease-out;
 }
 
-.primaryFrame:hover .primaryImage {
+.primaryFrame:hover .primaryImage,
+.primaryFrame:hover .primaryVideo {
   transform: scale(1.04);
 }
 
-/* Secondary Floating Card (Offset Right & Top) */
+/* Secondary Floating Card (Offset Right & Top) - 1st item */
 .secondaryFrame {
   position: absolute;
   top: -40px;
-  right: -20px;
-  width: 220px;
+  right: -25px;
+  width: 210px;
   aspect-ratio: 3 / 4;
   border-radius: 4px;
   overflow: hidden;
   box-shadow: 0 24px 48px rgba(0, 0, 0, 0.12);
   z-index: 4;
   border: 3px solid var(--color-surface);
-  transition: transform 0.5s ease;
+  animation: cardFadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-@media (max-width: 768px) {
-  .secondaryFrame {
-    width: 140px;
-    top: -20px;
-    right: -10px;
+/* Third Floating Card (Offset Mid Left) - 2nd item */
+.thirdFrame {
+  position: absolute;
+  bottom: 110px;
+  left: -45px;
+  width: 170px;
+  aspect-ratio: 3 / 4;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.14);
+  z-index: 5;
+  border: 3px solid var(--color-surface);
+  animation: cardFadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Fourth Floating Card (Offset Bottom Right - Larger Size) - 3rd item */
+.fourthFrame {
+  position: absolute;
+  bottom: -45px;
+  right: -35px;
+  width: 250px;
+  aspect-ratio: 3 / 4;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 32px 64px rgba(0, 0, 0, 0.22);
+  z-index: 6;
+  border: 3px solid var(--color-surface);
+  animation: cardFadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes cardFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }
 
-.secondaryImage {
+@media (max-width: 768px) {
+  .heroSection {
+    padding-top: 90px;
+    padding-bottom: 40px;
+  }
+
+  .primaryFrameWrapper {
+    max-width: 90%;
+  }
+
+  .secondaryFrame {
+    width: 110px;
+    top: -15px;
+    right: -5px;
+  }
+
+  .thirdFrame {
+    width: 95px;
+    bottom: 80px;
+    left: -5px;
+  }
+
+  .fourthFrame {
+    width: 135px;
+    bottom: -20px;
+    right: -5px;
+  }
+}
+
+.secondaryImage,
+.thirdImage,
+.fourthImage {
   width: 100%;
   height: 100%;
   object-fit: cover;

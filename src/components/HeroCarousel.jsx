@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { fetchSlides } from '../services/productService';
 import { useLanguage } from '../context/LanguageContext';
+import loadingVideo from '../assets/trimmed 1.mp4';
 import styles from './HeroCarousel.module.css';
 
 const FALLBACK_SLIDES = [
@@ -95,12 +96,16 @@ export default function HeroCarousel({ onNavigate }) {
 
   if (loading) {
     return (
-      <section className={styles.skeletonHero} aria-label="Loading carousel">
-        <div className={styles.skeletonContent}>
-          <div className={styles.skeletonTitle} />
-          <div className={styles.skeletonSubtitle} />
-          <div className={styles.skeletonCta} />
-        </div>
+      <section className={styles.videoLoadingHero} aria-label="Loading carousel video">
+        <video
+          className={styles.heroVideo}
+          src={loadingVideo}
+          autoPlay
+          loop
+          muted
+          playsInline
+        />
+        <div className={styles.slideOverlay} />
       </section>
     );
   }

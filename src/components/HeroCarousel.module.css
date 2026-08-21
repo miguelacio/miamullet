@@ -153,6 +153,25 @@
   right: 32px;
 }
 
+/* Video Loading State */
+.videoLoadingHero {
+  position: relative;
+  height: min(100vh, 820px);
+  min-height: 480px;
+  width: 100%;
+  overflow: hidden;
+  background-color: var(--color-surface-dim);
+}
+
+.heroVideo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
 /* Skeleton / Loading State */
 .skeletonHero {
   position: relative;
