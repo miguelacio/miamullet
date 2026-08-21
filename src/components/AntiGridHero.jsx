@@ -51,7 +51,7 @@ export default function AntiGridHero() {
           setSlides(slideList);
           
           // Reveal cards sequentially every 1 second
-          slideList.slice(0, 3).forEach((_, idx) => {
+          slideList.slice(0, 4).forEach((_, idx) => {
             const tId = setTimeout(() => {
               if (isMounted) {
                 setVisibleCount((prev) => Math.max(prev, idx + 1));
@@ -64,7 +64,7 @@ export default function AntiGridHero() {
         console.warn('Error fetching slides:', err);
         if (isMounted) {
           setSlides(HERO_LOOKS);
-          HERO_LOOKS.forEach((_, idx) => {
+          HERO_LOOKS.slice(0, 4).forEach((_, idx) => {
             const tId = setTimeout(() => {
               if (isMounted) {
                 setVisibleCount((prev) => Math.max(prev, idx + 1));
@@ -147,13 +147,24 @@ export default function AntiGridHero() {
               </div>
             )}
 
-            {/* Elevated Card 3: Bottom Left (3rd item, larger size) */}
+            {/* Elevated Card 3: Bottom Right (3rd item, larger size) */}
             {slides.length >= 3 && visibleCount >= 3 && (
               <div className={styles.fourthFrame}>
                 <img
                   src={slides[2].image || slides[2].primaryImage || slides[2].secondaryImage}
                   alt="Slide 3 highlight"
                   className={styles.fourthImage}
+                />
+              </div>
+            )}
+
+            {/* Elevated Card 4: Center Left (4th item, larger size) */}
+            {slides.length >= 4 && visibleCount >= 4 && (
+              <div className={styles.fifthFrame}>
+                <img
+                  src={slides[3].image || slides[3].primaryImage || slides[3].secondaryImage}
+                  alt="Slide 4 highlight"
+                  className={styles.fifthImage}
                 />
               </div>
             )}
